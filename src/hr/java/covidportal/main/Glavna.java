@@ -1,9 +1,6 @@
 package hr.java.covidportal.main;
 
-import hr.java.covidportal.model.Bolest;
-import hr.java.covidportal.model.Simptom;
-import hr.java.covidportal.model.VrijednostSimptoma;
-import hr.java.covidportal.model.Zupanija;
+import hr.java.covidportal.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,7 @@ public class Glavna {
         List<Zupanija> zupanije = new ArrayList<>();
         List<Simptom> simptomi = new ArrayList<>();
         List<Bolest> bolesti = new ArrayList<>();
+        List<Osoba> osobe = new ArrayList<>();
 
         zupanije = unosZupanija(zupanije, scanner, BROJ_ZUPANIJA);
 
@@ -27,7 +25,9 @@ public class Glavna {
 
         bolesti = unosBolesti(bolesti, simptomi, scanner, BROJ_BOLESTI);
 
-        bolesti.stream().forEach(System.out::println);
+        osobe = unosOsoba(osobe, zupanije, bolesti, scanner, BROJ_OSOBA);
+
+        osobe.stream().forEach(Glavna::ispisOsobe);
 
         scanner.close();
     }
@@ -105,8 +105,75 @@ public class Glavna {
             }
             bolesti.add(new Bolest(naziv, odabraniSimptomi));
         }
-
         return bolesti;
     }
+
+    private static List<Osoba> unosOsoba(List<Osoba> osobe, List<Zupanija> zupanije, List<Bolest> bolesti, Scanner scanner, final int limit) {
+        String ime;
+        String prezime;
+        int starost;
+        int brojZupanije;
+        Zupanija zupanija;
+        int brojBolesti;
+        Bolest bolest;
+        int ukupanBrojKontaktiranihOsoba;
+        int brojKontaktiraneOsobe;
+        List<Osoba> kontaktiraneOsobe;
+        System.out.println("Unesite podatke o " + limit + " osobe");
+        for(int i = 0; i < limit; ++i) {
+            System.out.println("Unesite ime " + (i+1) + " osobe");
+            ime = scanner.nextLine();
+            System.out.println("Unesite prezime " + (i+1) + " osobe");
+            prezime = scanner.nextLine();
+            System.out.println("Unesite starost osobe: ");
+            starost = Integer.parseInt(scanner.nextLine());
+            System.out.println("Unesite zupaniju prebivalista osobe");
+            for(int j = 0; j < zupanije.size(); ++j) {
+                System.out.println((j+1) + ". " + zupanije.get(j).getNaziv());
+            }
+            brojZupanije = Integer.parseInt(scanner.nextLine());
+            brojZupanije--;
+            zupanija = zupanije.get(brojZupanije);
+            System.out.println("Unesite bolest osobe: ");
+            for(int j = 0; j < bolesti.size(); ++j) {
+                System.out.println((j+1) + ". " + bolesti.get(j));
+            }
+            brojBolesti = Integer.parseInt(scanner.nextLine());
+            bolest = bolesti.get(brojBolesti);
+            if(osobe.size() <= 0) {
+                osobe.add(new Osoba(ime, prezime, starost, zupanija, bolest, new ArrayList<>()));
+            } else {
+                kontaktiraneOsobe = new ArrayList<>();
+                System.out.println("Unesite broj osoba koje su bile u kontaktu s tom osobom");
+                ukupanBrojKontaktiranihOsoba = Integer.parseInt(scanner.nextLine());
+                for(int j = 0; j < ukupanBrojKontaktiranihOsoba; ++j) {
+                    for(int k = 0; k < osobe.size(); ++k) {
+                        System.out.println((k+1) + ". " + osobe.get(k).getIme() + " " + osobe.get(k).getPrezime());
+                    }
+                    brojKontaktiraneOsobe = Integer.parseInt(scanner.nextLine());
+                    kontaktiraneOsobe.add(osobe.get(brojKontaktiraneOsobe-1));
+                }
+                osobe.add(new Osoba(ime, prezime, starost, zupanija, bolest, kontaktiraneOsobe));
+            }
+        }
+        return osobe;
+    }
+
+    private static void ispisOsobe(Osoba osoba) {
+        System.out.println("Ime i prezime: " + osoba.getIme() + " " + osoba.getPrezime());
+        System.out.println("Starost: " + osoba.getStarost());
+        System.out.println("Zupanija prebivalista: " + osoba.getZupanija().getNaziv());
+        System.out.println("Zarazen bolescu: " + osoba.getZarazenBolescu().getNaziv());
+        if(osoba.getKontaktiraneOsobe().size() > 0) {
+            System.out.println("Nema kontaktiranih osoba.");
+        } else {
+            osoba.getKontaktiraneOsobe().stream().forEach(Glavna::ispisKontaktiraneOsobe);
+        }
+    }
+
+    private static void ispisKontaktiraneOsobe(Osoba osoba) {
+        System.out.println(osoba.getIme() + " " + osoba.getPrezime());
+    }
+
 
 }
