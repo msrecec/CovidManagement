@@ -19,20 +19,20 @@ public class Glavna {
         List<Bolest> bolesti = new ArrayList<>();
         List<Osoba> osobe = new ArrayList<>();
 
-        zupanije = unosZupanija(zupanije, scanner, BROJ_ZUPANIJA);
+        unosZupanija(zupanije, scanner, BROJ_ZUPANIJA);
 
-        simptomi = unosSimptoma(simptomi, scanner, BROJ_SIMPTOMA);
+        unosSimptoma(simptomi, scanner, BROJ_SIMPTOMA);
 
-        bolesti = unosBolesti(bolesti, simptomi, scanner, BROJ_BOLESTI);
+        unosBolesti(bolesti, simptomi, scanner, BROJ_BOLESTI);
 
-        osobe = unosOsoba(osobe, zupanije, bolesti, scanner, BROJ_OSOBA);
+        unosOsoba(osobe, zupanije, bolesti, scanner, BROJ_OSOBA);
 
         osobe.stream().forEach(Glavna::ispisOsobe);
 
         scanner.close();
     }
 
-    private static List<Zupanija> unosZupanija(List<Zupanija> zupanije, Scanner scanner, final int limit) {
+    private static void unosZupanija(List<Zupanija> zupanije, Scanner scanner, final int limit) {
         String naziv;
         Integer brojStanovnika;
 
@@ -49,10 +49,9 @@ public class Glavna {
 
             zupanije.add(new Zupanija(naziv, brojStanovnika));
         }
-        return zupanije;
     }
 
-    private static List<Simptom> unosSimptoma(List<Simptom> simptomi, Scanner scanner, final int limit) {
+    private static void unosSimptoma(List<Simptom> simptomi, Scanner scanner, final int limit) {
         String naziv;
         String vrijednostSimptoma;
 
@@ -71,20 +70,30 @@ public class Glavna {
 
             vrijednostSimptoma = scanner.nextLine();
 
+            if(
+                    vrijednostSimptoma.compareTo(VrijednostSimptoma.RIJETKO.getVrijednost()) != 0 ||
+                    vrijednostSimptoma.compareTo(VrijednostSimptoma.SREDNJE.getVrijednost()) != 0 ||
+                    vrijednostSimptoma.compareTo(VrijednostSimptoma.CESTO.getVrijednost()) != 0
+            ) {
+                System.out.println("Vrijednost simtpoma nije odgovarajuca, unesite ponovno");
+                i--;
+                continue;
+            }
+
             simptomi.add(new Simptom(naziv, vrijednostSimptoma));
         }
-
-        return simptomi;
     }
 
-    private static List<Bolest> unosBolesti(List<Bolest> bolesti, List<Simptom> simptomi, Scanner scanner, final int limit) {
+    private static void unosBolesti(List<Bolest> bolesti, List<Simptom> simptomi, Scanner scanner, final int limit) {
         String naziv;
         Integer ukupanBrojSimptoma;
         Integer brojSimptoma;
         List<Simptom> odabraniSimptomi;
 
         System.out.println("Unesite podatke o " + limit + " bolesti:");
+
         for(int i = 0; i < limit; ++i) {
+
             odabraniSimptomi = new ArrayList<>();
             System.out.println("Unesite naziv bolesti: ");
             naziv = scanner.nextLine();
@@ -105,10 +114,9 @@ public class Glavna {
             }
             bolesti.add(new Bolest(naziv, odabraniSimptomi));
         }
-        return bolesti;
     }
 
-    private static List<Osoba> unosOsoba(List<Osoba> osobe, List<Zupanija> zupanije, List<Bolest> bolesti, Scanner scanner, final int limit) {
+    private static void unosOsoba(List<Osoba> osobe, List<Zupanija> zupanije, List<Bolest> bolesti, Scanner scanner, final int limit) {
         String ime;
         String prezime;
         int starost;
@@ -156,7 +164,6 @@ public class Glavna {
                 osobe.add(new Osoba(ime, prezime, starost, zupanija, bolest, kontaktiraneOsobe));
             }
         }
-        return osobe;
     }
 
     private static void ispisOsobe(Osoba osoba) {
