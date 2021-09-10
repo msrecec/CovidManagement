@@ -72,16 +72,18 @@ public class Glavna {
             naziv = scanner.nextLine();
 
             System.out.println(
-                    "Unesite vrijednost simptoma +(" +
+                    "Unesite vrijednost simptoma (" +
                     VrijednostSimptoma.RIJETKO.getVrijednost() + ", " +
                     VrijednostSimptoma.SREDNJE.getVrijednost() + " ili " +
                     VrijednostSimptoma.CESTO.getVrijednost() + "): ");
 
             vrijednostSimptoma = scanner.nextLine();
 
+            System.out.println(vrijednostSimptoma);
+
             if(
-                    vrijednostSimptoma.compareTo(VrijednostSimptoma.RIJETKO.getVrijednost()) != 0 ||
-                    vrijednostSimptoma.compareTo(VrijednostSimptoma.SREDNJE.getVrijednost()) != 0 ||
+                    vrijednostSimptoma.compareTo(VrijednostSimptoma.RIJETKO.getVrijednost()) != 0 &&
+                    vrijednostSimptoma.compareTo(VrijednostSimptoma.SREDNJE.getVrijednost()) != 0 &&
                     vrijednostSimptoma.compareTo(VrijednostSimptoma.CESTO.getVrijednost()) != 0
             ) {
                 System.out.println("Vrijednost simtpoma nije odgovarajuca, unesite ponovno");
@@ -104,6 +106,7 @@ public class Glavna {
         for(int i = 0; i < limit; ++i) {
             System.out.println("Unesite naziv bolesti: ");
             naziv = scanner.nextLine();
+
             System.out.println("Unesite broj simptoma: ");
             ukupanBrojSimptoma = Integer.parseInt(scanner.nextLine());
 
@@ -117,15 +120,19 @@ public class Glavna {
 
             for(int j = 0; j < ukupanBrojSimptoma; ++j) {
                 System.out.println("Odaberite " + (j+1) + ". simptom:");
+
                 for(int k = 0; k < simptomi.length; ++k) {
                     System.out.println(k+1 + ". " + simptomi[k].getNaziv() + " " + simptomi[k].getVrijednost());
                 }
+
                 brojSimptoma = Integer.parseInt(scanner.nextLine())-1;
-                if(brojSimptoma < 0 || brojSimptoma >= ukupanBrojSimptoma) {
+
+                if(brojSimptoma < 0 || brojSimptoma >= simptomi.length) {
                     System.out.println("Neispravan unos, molim pokusajte ponovno!");
                     j--;
                     continue;
                 }
+
                 odabraniSimptomi[j] = simptomi[brojSimptoma];
             }
             bolesti[i] = new Bolest(naziv, odabraniSimptomi);
@@ -147,10 +154,10 @@ public class Glavna {
         System.out.println("Unesite podatke o " + limit + " osobe");
 
         for(int i = 0; i < limit; ++i) {
-            System.out.println("Unesite ime " + (i+1) + " osobe");
+            System.out.println("Unesite ime " + (i+1) + ". osobe");
             ime = scanner.nextLine();
 
-            System.out.println("Unesite prezime " + (i+1) + " osobe");
+            System.out.println("Unesite prezime osobe: ");
             prezime = scanner.nextLine();
 
             System.out.println("Unesite starost osobe: ");
@@ -182,7 +189,7 @@ public class Glavna {
             System.out.println("Unesite bolest osobe: ");
 
             for(int j = 0; j < bolesti.length; ++j) {
-                System.out.println((j+1) + ". " + bolesti[j]);
+                System.out.println((j+1) + ". " + bolesti[j].getNaziv());
             }
 
             brojBolesti = Integer.parseInt(scanner.nextLine());
@@ -196,7 +203,7 @@ public class Glavna {
 
             bolest = bolesti[brojBolesti];
 
-            if(osobe.length <= 0 || i <= 0) {
+            if(i == 0) {
                 osobe[i] = new Osoba.Builder()
                         .ime(ime)
                         .prezime(prezime)
@@ -216,44 +223,56 @@ public class Glavna {
                     break;
                 }
 
-                kontaktiraneOsobe = new Osoba[ukupanBrojKontaktiranihOsoba];
+                if(ukupanBrojKontaktiranihOsoba > 0) {
 
-                for(int j = 0; j < ukupanBrojKontaktiranihOsoba; ++j) {
-                    for(int k = 0; k < osobe.length; ++k) {
-                        System.out.println((k+1) + ". " + osobe[k].getIme() + " " + osobe[k].getPrezime());
-                    }
-                    brojKontaktiraneOsobe = Integer.parseInt(scanner.nextLine());
-                    brojKontaktiraneOsobe--;
+                    kontaktiraneOsobe = new Osoba[ukupanBrojKontaktiranihOsoba];
 
-                    if(brojKontaktiraneOsobe < 0 || brojKontaktiraneOsobe >= ukupanBrojKontaktiranihOsoba) {
-                        System.out.println("Neispravan unos broja kontaktirane osobe. Unesite ponovno.");
-                        j--;
-                        continue;
-                    }
-
-                    if(j > 0) {
-                        boolean samePersonFlag = false;
-                        for(int k = 0; k < j; ++k) {
-                            if(osobe[brojKontaktiraneOsobe].equals(kontaktiraneOsobe[k])) {
-                                samePersonFlag = true;
-                            }
+                    for(int j = 0; j < ukupanBrojKontaktiranihOsoba; ++j) {
+                        for(int k = 0; k < i; ++k) {
+                            System.out.println((k+1) + ". " + osobe[k].getIme() + " " + osobe[k].getPrezime());
                         }
-                        if(samePersonFlag) {
-                            System.out.println("Osoba koju ste unesli je duplikat. Molim Vas unesite ponovno.");
+                        brojKontaktiraneOsobe = Integer.parseInt(scanner.nextLine());
+                        brojKontaktiraneOsobe--;
+
+                        if(brojKontaktiraneOsobe < 0 || brojKontaktiraneOsobe >= i) {
+                            System.out.println("Neispravan unos broja kontaktirane osobe. Unesite ponovno.");
                             j--;
                             continue;
                         }
+
+                        if(j > 0) {
+                            boolean samePersonFlag = false;
+                            for(int k = 0; k < j; ++k) {
+                                if(osobe[brojKontaktiraneOsobe].equals(kontaktiraneOsobe[k])) {
+                                    samePersonFlag = true;
+                                }
+                            }
+                            if(samePersonFlag) {
+                                System.out.println("Osoba koju ste unesli je duplikat. Molim Vas unesite ponovno.");
+                                j--;
+                                continue;
+                            }
+                        }
+                        kontaktiraneOsobe[j] = osobe[brojKontaktiraneOsobe];
                     }
-                    kontaktiraneOsobe[j] = osobe[brojKontaktiraneOsobe];
+                    osobe[i] = new Osoba.Builder()
+                            .ime(ime)
+                            .prezime(prezime)
+                            .starost(starost)
+                            .zupanija(zupanija)
+                            .zarazenBolescu(bolest)
+                            .kontaktiraneOsobe(kontaktiraneOsobe)
+                            .build();
+                } else {
+                    osobe[i] = new Osoba.Builder()
+                            .ime(ime)
+                            .prezime(prezime)
+                            .starost(starost)
+                            .zupanija(zupanija)
+                            .zarazenBolescu(bolest)
+                            .build();
                 }
-                osobe[i] = new Osoba.Builder()
-                        .ime(ime)
-                        .prezime(prezime)
-                        .starost(starost)
-                        .zupanija(zupanija)
-                        .zarazenBolescu(bolest)
-                        .kontaktiraneOsobe(kontaktiraneOsobe)
-                        .build();
+
             }
         }
     }
@@ -269,7 +288,7 @@ public class Glavna {
         System.out.println("Starost: " + osoba.getStarost());
         System.out.println("Zupanija prebivalista: " + osoba.getZupanija().getNaziv());
         System.out.println("Zarazen bolescu: " + osoba.getZarazenBolescu().getNaziv());
-        if(osoba.getKontaktiraneOsobe().length > 0) {
+        if(osoba.getKontaktiraneOsobe() == null) {
             System.out.println("Nema kontaktiranih osoba.");
         } else {
             for(int i = 0; i < osoba.getKontaktiraneOsobe().length; ++i) {

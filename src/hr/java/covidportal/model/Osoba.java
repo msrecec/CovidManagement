@@ -34,11 +34,11 @@ public class Osoba {
             return this;
         }
         public Builder zarazenBolescu(Bolest zarazenBolescu) {
-            this.zarazenBolescu = Builder.this.zarazenBolescu;
+            this.zarazenBolescu = zarazenBolescu;
             return this;
         }
         public Builder kontaktiraneOsobe(Osoba[] kontaktiraneOsobe) {
-            this.kontaktiraneOsobe = Builder.this.kontaktiraneOsobe;
+            this.kontaktiraneOsobe = kontaktiraneOsobe;
             return this;
         }
 
