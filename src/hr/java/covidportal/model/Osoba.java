@@ -53,6 +53,8 @@ public class Osoba {
             osoba.setZarazenBolescu(zarazenBolescu);
             osoba.setKontaktiraneOsobe(kontaktiraneOsobe);
 
+            Zarazno.prelazak(osoba.getZarazenBolescu(), osoba.getKontaktiraneOsobe(), osoba);
+
             return osoba;
 
         }
@@ -75,7 +77,10 @@ public class Osoba {
         this.zupanija = zupanija;
         this.zarazenBolescu = zarazenBolescu;
         this.kontaktiraneOsobe = kontaktiraneOsobe;
+
+        Zarazno.prelazak(this.zarazenBolescu, this.kontaktiraneOsobe, this);
     }
+
 
     public String getIme() {
         return ime;
@@ -114,6 +119,8 @@ public class Osoba {
     }
 
     public void setZarazenBolescu(Bolest zarazenBolescu) {
+        Zarazno.prelazak(zarazenBolescu, this.kontaktiraneOsobe, this);
+
         this.zarazenBolescu = zarazenBolescu;
     }
 
@@ -122,8 +129,10 @@ public class Osoba {
     }
 
     public void setKontaktiraneOsobe(Osoba[] kontaktiraneOsobe) {
+        Zarazno.prelazak(this.zarazenBolescu, kontaktiraneOsobe, this);
         this.kontaktiraneOsobe = kontaktiraneOsobe;
     }
+
 
     @Override
     public String toString() {
