@@ -53,7 +53,13 @@ public class Osoba {
             osoba.setZarazenBolescu(zarazenBolescu);
             osoba.setKontaktiraneOsobe(kontaktiraneOsobe);
 
-            Zarazno.prelazak(osoba.getZarazenBolescu(), osoba.getKontaktiraneOsobe(), osoba);
+            if(zarazenBolescu instanceof Virus virus) {
+                if(kontaktiraneOsobe != null) {
+                    for(Osoba kontaktiranaOsoba: osoba.kontaktiraneOsobe) {
+                        virus.prelazakZarazeNaOsobu(kontaktiranaOsoba);
+                    }
+                }
+            }
 
             return osoba;
 
@@ -78,7 +84,13 @@ public class Osoba {
         this.zarazenBolescu = zarazenBolescu;
         this.kontaktiraneOsobe = kontaktiraneOsobe;
 
-        Zarazno.prelazak(this.zarazenBolescu, this.kontaktiraneOsobe, this);
+        if(zarazenBolescu instanceof Virus virus) {
+            if(kontaktiraneOsobe != null) {
+                for(Osoba kontaktiranaOsoba: this.kontaktiraneOsobe) {
+                    virus.prelazakZarazeNaOsobu(kontaktiranaOsoba);
+                }
+            }
+        }
     }
 
 
@@ -119,8 +131,6 @@ public class Osoba {
     }
 
     public void setZarazenBolescu(Bolest zarazenBolescu) {
-        Zarazno.prelazak(zarazenBolescu, this.kontaktiraneOsobe, this);
-
         this.zarazenBolescu = zarazenBolescu;
     }
 
@@ -129,7 +139,6 @@ public class Osoba {
     }
 
     public void setKontaktiraneOsobe(Osoba[] kontaktiraneOsobe) {
-        Zarazno.prelazak(this.zarazenBolescu, kontaktiraneOsobe, this);
         this.kontaktiraneOsobe = kontaktiraneOsobe;
     }
 

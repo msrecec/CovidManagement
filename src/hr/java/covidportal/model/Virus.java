@@ -8,6 +8,6 @@ public class Virus extends Bolest implements Zarazno{
 
     @Override
     public void prelazakZarazeNaOsobu(Osoba osoba) {
-        osoba.setZarazenBolescu(this);
+        osoba.setZarazenBolescu(new Virus(this.getNaziv(), this.getSimptomi()));
     }
 }

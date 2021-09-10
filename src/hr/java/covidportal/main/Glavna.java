@@ -2,14 +2,12 @@ package hr.java.covidportal.main;
 
 import hr.java.covidportal.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Glavna {
     private static final int BROJ_ZUPANIJA = 3;
     private static final int BROJ_SIMPTOMA = 3;
-    private static final int BROJ_BOLESTI = 3;
+    private static final int BROJ_BOLESTI_I_VIRUSA = 4;
     private static final int BROJ_OSOBA = 3;
 
     public static void main(String[] args) {
@@ -18,14 +16,14 @@ public class Glavna {
         Scanner scanner = new Scanner(System.in);
         Zupanija[] zupanije = new Zupanija[BROJ_ZUPANIJA];
         Simptom[] simptomi = new Simptom[BROJ_SIMPTOMA];
-        Bolest[] bolesti = new Bolest[BROJ_BOLESTI];
+        Bolest[] bolesti = new Bolest[BROJ_BOLESTI_I_VIRUSA];
         Osoba[] osobe = new Osoba[BROJ_OSOBA];
 
         unosZupanija(zupanije, scanner, BROJ_ZUPANIJA);
 
         unosSimptoma(simptomi, scanner, BROJ_SIMPTOMA);
 
-        unosBolesti(bolesti, simptomi, scanner, BROJ_BOLESTI);
+        unosBolesti(bolesti, simptomi, scanner, BROJ_BOLESTI_I_VIRUSA);
 
         unosOsoba(osobe, zupanije, bolesti, scanner, BROJ_OSOBA);
 
@@ -99,11 +97,23 @@ public class Glavna {
         String naziv;
         Integer ukupanBrojSimptoma;
         Integer brojSimptoma;
+        Integer bolestIliVirus;
         Simptom[] odabraniSimptomi;
 
-        System.out.println("Unesite podatke o " + limit + " bolesti:");
+        System.out.println("Unesite podatke o " + limit + " bolesti ili virusa:");
 
         for(int i = 0; i < limit; ++i) {
+            System.out.println("Unosite li bolest ili virus ?\n1) BOLEST\n2) VIRUS");
+
+            bolestIliVirus = Integer.parseInt(scanner.nextLine());
+            bolestIliVirus--;
+
+            if(bolestIliVirus < 0 || bolestIliVirus > 1) {
+                System.out.println("Neispravan unos. Unesite ponovno");
+                i--;
+                continue;
+            }
+
             System.out.println("Unesite naziv bolesti: ");
             naziv = scanner.nextLine();
 
@@ -135,7 +145,12 @@ public class Glavna {
 
                 odabraniSimptomi[j] = simptomi[brojSimptoma];
             }
-            bolesti[i] = new Bolest(naziv, odabraniSimptomi);
+
+            if(bolestIliVirus == 0) {
+                bolesti[i] = new Bolest(naziv, odabraniSimptomi);
+            } else {
+                bolesti[i] = new Virus(naziv, odabraniSimptomi);
+            }
         }
     }
 
@@ -186,7 +201,7 @@ public class Glavna {
 
             zupanija = zupanije[brojZupanije];
 
-            System.out.println("Unesite bolest osobe: ");
+            System.out.println("Unesite bolest ili virus osobe: ");
 
             for(int j = 0; j < bolesti.length; ++j) {
                 System.out.println((j+1) + ". " + bolesti[j].getNaziv());
