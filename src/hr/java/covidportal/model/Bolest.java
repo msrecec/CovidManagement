@@ -1,12 +1,13 @@
 package hr.java.covidportal.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Bolest {
     private String naziv;
-    private List<Simptom> simptomi;
+    private Simptom[] simptomi;
 
-    public Bolest(String naziv, List<Simptom> simptomi) {
+    public Bolest(String naziv, Simptom[] simptomi) {
         this.naziv = naziv;
         this.simptomi = simptomi;
     }
@@ -19,11 +20,11 @@ public class Bolest {
         this.naziv = naziv;
     }
 
-    public List<Simptom> getSimptomi() {
+    public Simptom[] getSimptomi() {
         return simptomi;
     }
 
-    public void setSimptomi(List<Simptom> simptomi) {
+    public void setSimptomi(Simptom[] simptomi) {
         this.simptomi = simptomi;
     }
 
@@ -31,7 +32,7 @@ public class Bolest {
     public String toString() {
         return "Bolest{" +
                 "naziv='" + naziv + '\'' +
-                ", simptomi=" + simptomi +
+                ", simptomi=" + Arrays.toString(simptomi) +
                 '}';
     }
 }

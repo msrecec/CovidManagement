@@ -1,16 +1,74 @@
 package hr.java.covidportal.model;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Osoba {
+
+    public static class Builder {
+
+        private String ime;
+        private String prezime;
+        private Integer starost;
+        private Zupanija zupanija;
+        private Bolest zarazenBolescu;
+        private Osoba[] kontaktiraneOsobe;
+
+        public Builder() {}
+
+        public Builder ime(String ime) {
+            this.ime = ime;
+            return this;
+        }
+        public Builder prezime(String prezime) {
+            this.prezime = prezime;
+            return this;
+        }
+        public Builder starost(Integer starost) {
+            this.starost = starost;
+            return this;
+        }
+        public Builder zupanija(Zupanija zupanija) {
+            this.zupanija = zupanija;
+            return this;
+        }
+        public Builder zarazenBolescu(Bolest zarazenBolescu) {
+            this.zarazenBolescu = Builder.this.zarazenBolescu;
+            return this;
+        }
+        public Builder kontaktiraneOsobe(Osoba[] kontaktiraneOsobe) {
+            this.kontaktiraneOsobe = Builder.this.kontaktiraneOsobe;
+            return this;
+        }
+
+        public Osoba build() {
+
+            Osoba osoba = new Osoba();
+
+            osoba.setIme(ime);
+            osoba.setPrezime(prezime);
+            osoba.setStarost(starost);
+            osoba.setZupanija(zupanija);
+            osoba.setZarazenBolescu(zarazenBolescu);
+            osoba.setKontaktiraneOsobe(kontaktiraneOsobe);
+
+            return osoba;
+
+        }
+
+    }
+
     private String ime;
     private String prezime;
     private Integer starost;
     private Zupanija zupanija;
     private Bolest zarazenBolescu;
-    private List<Osoba> kontaktiraneOsobe;
+    private Osoba[] kontaktiraneOsobe;
 
-    public Osoba(String ime, String prezime, Integer starost, Zupanija zupanija, Bolest zarazenBolescu, List<Osoba> kontaktiraneOsobe) {
+    public Osoba() {}
+
+    public Osoba(String ime, String prezime, Integer starost, Zupanija zupanija, Bolest zarazenBolescu, Osoba[] kontaktiraneOsobe) {
         this.ime = ime;
         this.prezime = prezime;
         this.starost = starost;
@@ -59,11 +117,11 @@ public class Osoba {
         this.zarazenBolescu = zarazenBolescu;
     }
 
-    public List<Osoba> getKontaktiraneOsobe() {
+    public Osoba[] getKontaktiraneOsobe() {
         return kontaktiraneOsobe;
     }
 
-    public void setKontaktiraneOsobe(List<Osoba> kontaktiraneOsobe) {
+    public void setKontaktiraneOsobe(Osoba[] kontaktiraneOsobe) {
         this.kontaktiraneOsobe = kontaktiraneOsobe;
     }
 
@@ -75,7 +133,22 @@ public class Osoba {
                 ", starost=" + starost +
                 ", zupanija=" + zupanija +
                 ", zarazenBolescu=" + zarazenBolescu +
-                ", kontaktiraneOsobe=" + kontaktiraneOsobe +
+                ", kontaktiraneOsobe=" + Arrays.toString(kontaktiraneOsobe) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Osoba osoba = (Osoba) o;
+        return Objects.equals(ime, osoba.ime) && Objects.equals(prezime, osoba.prezime) && Objects.equals(starost, osoba.starost) && Objects.equals(zupanija, osoba.zupanija) && Objects.equals(zarazenBolescu, osoba.zarazenBolescu) && Arrays.equals(kontaktiraneOsobe, osoba.kontaktiraneOsobe);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(ime, prezime, starost, zupanija, zarazenBolescu);
+        result = 31 * result + Arrays.hashCode(kontaktiraneOsobe);
+        return result;
     }
 }
