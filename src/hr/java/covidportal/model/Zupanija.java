@@ -1,20 +1,11 @@
 package hr.java.covidportal.model;
 
-public class Zupanija {
-    private String naziv;
+public class Zupanija extends ImenovaniEntitet {
     private Integer brojStanovnika;
 
     public Zupanija(String naziv, Integer brojStanovnika) {
-        this.naziv = naziv;
+        super(naziv);
         this.brojStanovnika = brojStanovnika;
-    }
-
-    public String getNaziv() {
-        return naziv;
-    }
-
-    public void setNaziv(String naziv) {
-        this.naziv = naziv;
     }
 
     public Integer getBrojStanovnika() {
@@ -28,7 +19,7 @@ public class Zupanija {
     @Override
     public String toString() {
         return "Zupanija{" +
-                "naziv='" + naziv + '\'' +
+                "naziv='" + getNaziv() + '\'' +
                 ", brojStanovnika=" + brojStanovnika +
                 '}';
     }

@@ -1,20 +1,11 @@
 package hr.java.covidportal.model;
 
-public class Simptom {
-    String naziv;
+public class Simptom extends ImenovaniEntitet{
     String vrijednost;
 
     public Simptom(String naziv, String vrijednost) {
-        this.naziv = naziv;
+        super(naziv);
         this.vrijednost = vrijednost;
-    }
-
-    public String getNaziv() {
-        return naziv;
-    }
-
-    public void setNaziv(String naziv) {
-        this.naziv = naziv;
     }
 
     public String getVrijednost() {
@@ -28,7 +19,7 @@ public class Simptom {
     @Override
     public String toString() {
         return "Simptom{" +
-                "naziv='" + naziv + '\'' +
+                "naziv='" + getNaziv() + '\'' +
                 ", vrijednost='" + vrijednost + '\'' +
                 '}';
     }
